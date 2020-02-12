@@ -1,0 +1,16 @@
+{
+  "authenticate": {
+    "success": true,
+    "data": {
+      "email": "dev@mobixtec.com",
+      "name": "Mobix Team"
+    }
+  },
+  "feature": {
+    "sucess": true,
+    "data": {
+      "name": "Mobix Team",
+      "description": "Description"
+    }
+  }
+}
