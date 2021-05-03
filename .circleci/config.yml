@@ -16,11 +16,7 @@ jobs:
           event: pass
           template: basic_fail_1
 workflows:
-  node-tests:
+  bauild-and-tests:
     jobs:
-      - node/test
-  deploy_and_notify:
-    jobs:
-      - deploy:
-          context:
-            - slack-secrets
+      - deploy
+
