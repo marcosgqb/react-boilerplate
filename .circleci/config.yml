@@ -12,11 +12,11 @@ jobs:
       - run:
           command: npm run deploy
       - slack/notify:
-          channel:
-          event: pass
-          template: success_tagged_deploy_1
-          event: fail
-          template: basic_fail_1
+          color: '#32788D'
+          message: Tests passed
+          title: Testing Slack Orb
+          author_name: Marcão
+          webhook: https://hooks.slack.com/services/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
 workflows:
   node-tests:
     jobs:
