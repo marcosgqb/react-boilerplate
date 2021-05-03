@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
-  slack: circleci/slack@4.1
+  slack: circleci/slack@4.3.0
 jobs:
   deploy:
     executor:
@@ -12,12 +12,15 @@ jobs:
       - run:
           command: npm run deploy
       - slack/notify:
-          color: '#32788D'
-          message: Tests passed
-          title: Testing Slack Orb
-          author_name: Marcão
-          webhook: https://hooks.slack.com/services/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
+          channel: testintegração
+          event: pass
+          template: basic_fail_1
 workflows:
   node-tests:
     jobs:
       - node/test
+  deploy_and_notify:
+    jobs:
+      - deploy:
+          context:
+            - slack-secrets
