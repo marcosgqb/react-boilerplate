@@ -9,14 +9,11 @@ jobs:
     steps:
       - checkout
       - node/install-packages
-      - run:
-          command: npm run deploy
       - slack/notify:
           channel: testintegração
           event: pass
-          template: basic_fail_1
+          template: basic_success_1
 workflows:
-  bauild-and-tests:
-    jobs:
-      - deploy
+  jobs:
+    - deploy
 
