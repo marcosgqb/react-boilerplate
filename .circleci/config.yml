@@ -21,7 +21,3 @@ workflows:
   node-tests:
     jobs:
       - node/test
-  deploy_and_notify:
-    jobs:
-      - deploy:
-          context: slack-secrets
