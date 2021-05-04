@@ -1,23 +1,25 @@
 version: 2.1
 orbs:
-  node: circleci/node@3.0.0
+  node: circleci/node@4.3.0
   slack: circleci/slack@4.3.0
 jobs:
-  deploy:
+  build:
     executor:
       name: node/default
     steps:
+      - checkout
+      - node/install:
+              install-yarn: true
+      - run: yarn build
+      - run: yarn test
       - slack/notify:
           channel: testintegração
           event: pass
           template: basic_success_1
 
 workflows:
-  deploy_and_notify:
+  build_and_notify:
     jobs:
-      - deploy
-  app-tests:
-    jobs:
-      - node/test
+      - build
 
 
