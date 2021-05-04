@@ -15,7 +15,6 @@ jobs:
 workflows:
   deploy_and_notify:
     jobs:
-      - deploy:
-          context:
-            - slack-secrets
+      - deploy
+
 
