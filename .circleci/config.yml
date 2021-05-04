@@ -10,9 +10,12 @@ jobs:
       - checkout
       - node/install:
               install-yarn: true
-      - run: npm install
-      - run: npm run build
-      - run: npm run test
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: yarn install
+          pkg-manager: yarn
+      - run: yarn build
+      - run: yarn test
       - slack/notify:
           channel: testintegracao
           event: pass
