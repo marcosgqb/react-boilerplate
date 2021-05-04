@@ -10,7 +10,7 @@ jobs:
       - checkout
       - node/install:
               install-yarn: true
-      - run: npm i -g rimraf
+      - run: npm install
       - run: npm run build
       - run: npm run test
       - slack/notify:
