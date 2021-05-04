@@ -13,9 +13,13 @@ jobs:
       - run: yarn build
       - run: yarn test
       - slack/notify:
-          channel: testintegração
+          channel: testintegracao
           event: pass
           template: basic_success_1
+      - slack/notify:
+          channel: testintegracao
+          event: fail
+          template: basic_fail_1
 
 workflows:
   build_and_notify:
