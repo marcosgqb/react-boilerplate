@@ -7,13 +7,14 @@ jobs:
     executor:
       name: node/default
     steps:
-      - checkout
-      - node/install-packages
       - slack/notify:
           channel: testintegração
           event: pass
           template: basic_success_1
 workflows:
-  jobs:
-    - deploy
+  - deploy_and_notify:
+        jobs:
+          - deploy:
+              context:
+                 - slack-secrets
 
