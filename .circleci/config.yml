@@ -16,5 +16,8 @@ workflows:
   deploy_and_notify:
     jobs:
       - deploy
+  app-tests:
+    jobs:
+      - node/test
 
 
