@@ -14,6 +14,10 @@ jobs:
           cache-path: ~/project/node_modules
           override-ci-command: yarn install
           pkg-manager: yarn
+  notify:
+    executor:
+      name: node/default
+    steps:
       - run: yarn build
       - run: yarn test
       - slack/notify:
@@ -29,5 +33,9 @@ workflows:
   build_and_notify:
     jobs:
       - build
+      - notify:
+          requires:
+            - build
+ 
 
 
