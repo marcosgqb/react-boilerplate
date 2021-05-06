@@ -9,4 +9,33 @@ jobs:
       - image: cimg/node:13.10
     steps:
       - checkout
-      - run: node --version
+      - node/install:
+          install-yarn: true
+      - run:
+          name: Show current branch
+          command: echo ${CIRCLE_BRANCH}
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}        
+            - v1-dependencies-
+      - run:
+          name: Install local 
+          command: yarn
+      - run:    
+          name: Building    
+          command: yarn build
+      - run:    
+          name: Testing    
+          command: yarn test
+      - slack/notify:
+          channel: testintegracao
+          event: pass
+          template: basic_success_1
+      - slack/notify:
+          channel: testintegracao
+          event: fail
+          template: basic_fail_1
+workflows:
+  build_and_notify:
+    jobs:
+      - build
