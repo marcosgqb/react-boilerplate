@@ -21,6 +21,9 @@ jobs:
       - run:
           name: Install local 
           command: yarn
+      - run:
+          name: Install local 
+          command: npm install
       - run:    
           name: Building    
           command: yarn build
