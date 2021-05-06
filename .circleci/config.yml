@@ -9,8 +9,6 @@ jobs:
       - image: cimg/node:13.10
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
       - run:
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
@@ -18,12 +16,6 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}        
             - v1-dependencies-
-      - run:
-          name: Install local 
-          command: yarn
-      - run:
-          name: Install local 
-          command: npm install
       - run:    
           name: Building    
           command: yarn build
