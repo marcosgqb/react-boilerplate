@@ -4,40 +4,8 @@ orbs:
   slack: circleci/slack@4.3.0
 jobs:
   build:
-    executor:
-      name: node/default
+    docker:
+      - image: cimg/node:16.1.0
     steps:
       - checkout
-      - node/install:
-              install-yarn: true
-      - node/install-packages:
-          cache-path: ~/project/node_modules
-          override-ci-command: yarn install
-          pkg-manager: yarn
-  notify:
-    executor:
-      name: node/default
-    steps:
-      - node/install:
-          install-yarn: true
-      - run: yarn build
-      - run: yarn test
-      - slack/notify:
-          channel: testintegracao
-          event: pass
-          template: basic_success_1
-      - slack/notify:
-          channel: testintegracao
-          event: fail
-          template: basic_fail_1
-
-workflows:
-  build_and_notify:
-    jobs:
-      - build
-      - notify:
-          requires:
-            - build
- 
-
-
+      - run: node --version
