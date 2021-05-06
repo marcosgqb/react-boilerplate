@@ -18,6 +18,8 @@ jobs:
     executor:
       name: node/default
     steps:
+      - node/install:
+          install-yarn: true
       - run: yarn build
       - run: yarn test
       - slack/notify:
