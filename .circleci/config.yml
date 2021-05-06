@@ -6,7 +6,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/node:default
+      - image: cimg/node:13.10
     steps:
       - checkout
       - run: node --version
