@@ -12,7 +12,7 @@ jobs:
               install-yarn: true
 
       - node/install-packages:
-          cache-path: ~/project/node_modules
+         # cache-path: ~/project/node_modules
           override-ci-command: yarn install
           pkg-manager: yarn
 
