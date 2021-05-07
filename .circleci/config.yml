@@ -1,27 +1,24 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@2.0.0
+  aws-cli: circleci/aws-cli@0.1.18
   node: circleci/node@4.3.0
   slack: circleci/slack@4.3.0
+
 jobs:
   build:
-    docker:
-      - image: cimg/node:13.10
+    executor:
+      name: node/default
     steps:
       - checkout
-      - run:
-          name: Show current branch
-          command: echo ${CIRCLE_BRANCH}
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}        
-            - v1-dependencies-
-      - run:    
-          name: Building    
-          command: yarn build
-      - run:    
-          name: Testing    
-          command: yarn test
+      - node/install:
+          install-yarn: true
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: yarn install
+          pkg-manager: yarn
+      - run: yarn build
+      - run: yarn test
       - slack/notify:
           channel: testintegracao
           event: pass
@@ -30,7 +27,27 @@ jobs:
           channel: testintegracao
           event: fail
           template: basic_fail_1
+
+  deploy:
+        executor: aws-cli/default
+        steps:
+          - attach_workspace:
+              at: .
+          - aws-cli/setup:
+              profile-name: default
+          - run:
+              name: Upload file to S3
+              command: aws s3 sync ./dist/ s3://circleci-test-react --delete
+
 workflows:
+
   build_and_notify:
     jobs:
       - build
+      #- deploy:
+      #    requires:
+      #      - build_and_notify
+      #    context: aws-context
+          
+
+          
