@@ -10,7 +10,7 @@ jobs:
       - checkout
       - node/install:
               install-yarn: true
-              install-npm: true
+             # install-npm: true
       - node/install-packages:
           cache-path: ~/project/node_modules
           override-ci-command: yarn install
