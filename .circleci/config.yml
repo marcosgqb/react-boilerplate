@@ -4,9 +4,8 @@ orbs:
   slack: circleci/slack@4.3.0
 jobs:
   build:
-    executor:
-      name: node/default
-      tag: '13.14'
+    docker:
+      - image: node:current
     steps:
       - checkout
       - node/install:
