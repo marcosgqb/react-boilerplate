@@ -17,8 +17,10 @@ jobs:
           cache-path: ~/project/node_modules
           override-ci-command: yarn install
           pkg-manager: yarn
+
       - run: yarn build
       - run: yarn test
+
       - slack/notify:
           channel: testintegracao
           event: pass
@@ -28,16 +30,17 @@ jobs:
           event: fail
           template: basic_fail_1
 
-  deploy:
-        executor: aws-cli/default
-        steps:
-          - attach_workspace:
-              at: .
-          - aws-cli/setup:
-              profile-name: default
-          - run:
-              name: Upload file to S3
-              command: aws s3 sync ./dist/ s3://circleci-test-react --delete
+ # deploy:
+ #       executor: aws-cli/default
+ #       steps:
+ #         - checkout
+ #         - attach_workspace:
+ #             at: .
+ #         - aws-cli/setup:
+ #             profile-name: default
+ #         - run:
+ #             name: Upload file to S3
+ #             command: aws s3 sync ./dist/ s3://circleci-test-react --delete
 
 workflows:
 
