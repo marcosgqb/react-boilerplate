@@ -37,7 +37,7 @@ jobs:
               profile-name: default
           - run:
               name: Upload file to S3
-              command: aws s3 sync ./dist/ s3://circleci-test-react --delete
+              command: aws s3 sync ./build/ s3://circleci-test-react --delete
 
 workflows:
   build_and_notify:
