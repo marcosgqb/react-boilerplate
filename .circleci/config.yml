@@ -8,36 +8,47 @@ jobs:
   build:
     docker:
       - image: node:current
+    working_directory: ~/circle-ci
     steps:
+    
       - checkout
-      - node/install:
-              install-yarn: true
-      - node/install-packages:
-          cache-path: ~/project/node_modules
-         # override-ci-command: yarn install
-          pkg-manager: yarn
-
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn  
       - run: yarn build
       - run: yarn test
-      - slack/notify:
-          channel: testintegracao
-          event: pass
-          template: basic_success_1
-      - slack/notify:
-          channel: testintegracao
-          event: fail
-          template: basic_fail_1
+  #    - slack/notify:
+  #        channel: testintegracao
+  #        event: pass
+  #        template: basic_success_1
+  #    - slack/notify:
+  #        channel: testintegracao
+  #        event: fail
+  #        template: basic_fail_1
   deploy:
-        executor: aws-cli/default
+        docker:
+          - image: node:current
+        executor: 
+          aws-cli/default
         steps:
           - checkout
           - attach_workspace:
               at: .
           - aws-cli/setup:
               profile-name: default
+              
           - run:
               name: Upload file to S3
-              command: aws s3 sync .build/ s3://circleci-test-react --delete
+              command: aws s3 sync build/ s3://circleci-test-react --acl public-read
 
 workflows:
   build_and_notify:
@@ -46,6 +57,4 @@ workflows:
       - deploy:
           requires:
             - build
-
-          
-
+          context: context
