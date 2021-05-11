@@ -10,7 +10,6 @@ jobs:
       - image: node:current
     working_directory: ~/circle-ci
     steps:
-    
       - checkout
       - restore_cache:
           name: Restore Yarn Package Cache
@@ -35,8 +34,6 @@ jobs:
   #        event: fail
   #        template: basic_fail_1
   deploy:
-        docker:
-          - image: node:current
         executor: 
           aws-cli/default
         steps:
