@@ -24,7 +24,7 @@ jobs:
           paths:
             - ~/.cache/yarn  
       - run: yarn build
-      - run: yarn test
+  #    - run: yarn test
   #    - slack/notify:
   #        channel: testintegracao
   #        event: pass
