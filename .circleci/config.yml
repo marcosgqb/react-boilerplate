@@ -11,8 +11,8 @@ jobs:
     working_directory: ~/circle-ci
     steps:
       - checkout
-      - node/install-packages:
-          cache-path: ~/project/node_modules
+      #- node/install-packages:
+      #    cache-path: ~/project/node_modules
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
@@ -24,7 +24,8 @@ jobs:
           name: Save Yarn Package Cache
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
-            - ~/.cache/yarn  
+            - ~/.cache/yarn
+            - node_modules  
       - run: yarn build
       - run: yarn test
   #    - slack/notify:
