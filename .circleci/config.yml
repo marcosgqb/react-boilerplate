@@ -8,7 +8,7 @@ jobs:
   build:
     docker:
       - image: node:current
-    working_directory: ~/circle-ci
+    #working_directory: ~/circle-ci
     steps:
       - checkout
       #- node/install-packages:
@@ -46,7 +46,7 @@ jobs:
           - aws-cli/setup
           - run:
               name: Upload file to S3
-              command: aws s3 sync ~/build/ s3://circleci-test-react --acl public-read
+              command: aws s3 sync build/ s3://circleci-test-react --acl public-read
 
 
 workflows:
