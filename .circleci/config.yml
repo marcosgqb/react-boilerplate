@@ -43,17 +43,11 @@ jobs:
           - checkout
           - attach_workspace:
               at: .
-          - aws-cli/setup:
-              profile-name: default
-        #  - run:
-        #      name: Upload file to S3
-        #      command: aws s3 sync build/ s3://circleci-test-react --acl public-read
-          - aws-s3/sync:
-              from: build
-              to: 's3://circleci-test-react'
-              arguments: |
-                --acl public-read \
-                --cache-control "max-age=86400"
+          - aws-cli/setup
+          - run:
+              name: Upload file to S3
+              command: aws s3 sync build/ s3://circleci-test-react --acl public-read
+
 
 workflows:
   build_and_notify:
@@ -62,3 +56,4 @@ workflows:
       - deploy:
           requires:
             - build
+          context: AWS_ACCESS_TOKEN
