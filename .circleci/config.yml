@@ -46,7 +46,7 @@ jobs:
           - aws-cli/setup
           - run:
               name: Upload file to S3
-              command: aws s3 sync build s3://circleci-test-react --acl public-read
+              command: aws s3 sync ~/build/ s3://circleci-test-react --acl public-read
 
 
 workflows:
