@@ -27,6 +27,10 @@ jobs:
             - ~/.cache/yarn
             - node_modules  
       - run: yarn build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
   #    - run: yarn test
   #    - slack/notify:
   #        channel: testintegracao
@@ -36,6 +40,7 @@ jobs:
   #        channel: testintegracao
   #        event: fail
   #        template: basic_fail_1
+
   deploy:
         executor: 
           aws-cli/default
