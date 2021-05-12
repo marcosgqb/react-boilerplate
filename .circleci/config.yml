@@ -11,6 +11,8 @@ jobs:
     working_directory: ~/circle-ci
     steps:
       - checkout
+      - node/install-packages:
+          cache-path: ~/project/node_modules
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
@@ -24,7 +26,7 @@ jobs:
           paths:
             - ~/.cache/yarn  
       - run: yarn build
-  #    - run: yarn test
+      - run: yarn test
   #    - slack/notify:
   #        channel: testintegracao
   #        event: pass
@@ -42,16 +44,29 @@ jobs:
               at: .
           - aws-cli/setup:
               profile-name: default
-              
-          - run:
-              name: Upload file to S3
-              command: aws s3 sync build/ s3://circleci-test-react --acl public-read
+          - run: 
+              name: Configure AWS Access Key ID
+              command: |
+               aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID} --profile default
+          - run: 
+              name: Configure AWS Secret Access Key
+              command: |
+                aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile default             
+        #  - run:
+        #      name: Upload file to S3
+        #      command: aws s3 sync build/ s3://circleci-test-react --acl public-read
+          - aws-s3/sync:
+              from: bucket
+              to: 's3://circleci-test-react'
+              arguments: |
+                --acl public-read \
+                --cache-control "max-age=86400"
 
 workflows:
   build_and_notify:
     jobs:
       - build
       - deploy:
+          context: AWS_ACCESS_TOKEN
           requires:
             - build
-        #  context: context
