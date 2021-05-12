@@ -49,7 +49,7 @@ jobs:
         #      name: Upload file to S3
         #      command: aws s3 sync build/ s3://circleci-test-react --acl public-read
           - aws-s3/sync:
-              from: bucket
+              from: build
               to: 's3://circleci-test-react'
               arguments: |
                 --acl public-read \
@@ -60,6 +60,5 @@ workflows:
     jobs:
       - build
       - deploy:
-          context: AWS_ACCESS_TOKEN
           requires:
             - build
